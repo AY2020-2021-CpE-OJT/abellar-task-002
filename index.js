@@ -2,10 +2,17 @@ const express = require('express');
 const app = express();
 const MongoClient = require('mongodb').MongoClient;
 
+app.use(express.json());
+
 MongoClient.connect('mongodb+srv://user001:user001-mongodb-basics@practice.54zqw.mongodb.net/test?retryWrites=true&w=majority', {useUnifiedTopology: true}, (err, client) => {
     if (err) throw err;
     console.log('Database Connected');
+    const dbProduct = client.db('product');
+    const beansCollection = dbProduct.collection('beans');
     
+    app.post('/beans', (req, res) => {
+        beansCollection.insertOne(req.body);
+    });
 });
 
 app.get('/', (req, res) => {
