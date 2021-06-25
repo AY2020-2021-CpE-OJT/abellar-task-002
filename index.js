@@ -11,6 +11,9 @@ MongoClient.connect('mongodb+srv://user001:user001-mongodb-basics@practice.54zqw
     const beansCollection = dbProduct.collection('beans');
     
     app.post('/beans', (req, res) => {
+        const bean = req.body;
+        if (!req.body.name) res.status(400).send('Must have name');
+        else if (!req.body.qty.isInteger) res.status(400).send('Quantity must be an Integer');
         beansCollection.insertOne(req.body);
     });
 });
