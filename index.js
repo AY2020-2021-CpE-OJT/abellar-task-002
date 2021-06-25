@@ -16,6 +16,13 @@ MongoClient.connect('mongodb+srv://user001:user001-mongodb-basics@practice.54zqw
         else if (!req.body.qty.isInteger) res.status(400).send('Quantity must be an Integer');
         beansCollection.insertOne(req.body);
     });
+
+    app.get('/beans', (req, res) => {
+        dbProduct.collection('beans').find({}).toArray((err, result) => {
+            if (err) throw err;
+            res.send(result);
+        });
+    });
 });
 
 app.get('/', (req, res) => {
