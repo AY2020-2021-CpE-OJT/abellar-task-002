@@ -11,10 +11,14 @@ MongoClient.connect('mongodb+srv://user001:user001-mongodb-basics@practice.54zqw
     const beansCollection = dbProduct.collection('beans');
     
     app.post('/beans', (req, res) => {
-        const bean = req.body;
-        if (!req.body.name) res.status(400).send('Must have name');
-        else if (!req.body.qty.isInteger) res.status(400).send('Quantity must be an Integer');
+        if (!req.body.name) return res.status(400).send('Must have name');
+        if (!Number.isInteger(req.body.qty)) return res.status(400).send('Quantity must be an Integer');
         beansCollection.insertOne(req.body);
+        const bean = {
+            name: req.body.name,
+            qty: req.body.qty
+        };
+        res.send(bean);
     });
 
     app.get('/beans', (req, res) => {
